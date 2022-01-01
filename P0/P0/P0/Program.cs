@@ -25,144 +25,192 @@ namespace P0
          * decrease number of Products at Business
          * option to cancel purchase and redact purchase in history, and increase number of Products at Business
          */
+
+        /**ORDER OF PROCESS
+         * 1. customer table
+         * 2. storesList
+         * 3. FullProductList
+         * 4. ShoppingCart
+         * 5. ItemsInCart
+         * 6. Orders
+         * 7. Inventory
+         */
         static void Main(string[] args)
         {
-            string newStr = "Data source=JAMIESCHWARTZPC\\SQLEXPRESS; initial Catalog=P0; integrated security=true";
-            SqlConnection prodSQL = new SqlConnection(newStr);
-            prodSQL.Open();
-            ProductAccess inventory = new ProductAccess();
+            DatabaseAccess dbAccess = new DatabaseAccess();
             CartDB cartDB = new CartDB();
             Customer customer = new Customer();
             
             Console.WriteLine("Welcome to Fun-iture! We sell fun furniture");
             //switch statement for login, register or quit -- credit to Kevin 
-            Console.WriteLine("In order to start, choose one of the following. \n[1]To login\n[2]To register\n[0]To quit");
+            Console.WriteLine("In order to start, choose one of the following.\n[1]To login\n[2]To register\n[0]To quit");
             int menuChoice = Convert.ToInt32(Console.ReadLine());
-            
+            bool mainMenu = true;
             //switch between: log in (already created user) && register (create user)
-            switch (menuChoice)
+            do
             {
-                case 0:
-                    //exit
-                    break;
-                case 1:
-                    string querystring = $"SELECT * FROM dbo.Customer";
-                    SqlCommand cmd = new SqlCommand(querystring, prodSQL);
-                    SqlDataReader dr = cmd.ExecuteReader();
-                    Console.WriteLine("List of Customer Names:");
-                    while (dr.Read())
-                    {
-                        Console.WriteLine("\t" + dr[1].ToString());
-                    }
+                if (menuChoice == 1)
+                {
                     customer.LogInCustomer();
-                    break;
-                case 2:
+                    mainMenu = false;
+                }
+                else if (menuChoice == 2)
+                {
                     customer.AddCustomer();
-                    break;
-                default:
-                    Console.WriteLine("Please enter one of the following. \n[1]To login\n[2]To register\n[0]To quit");
-                    break;
-            }
+                    mainMenu = false;
+                }
+                else if(menuChoice == 0)
+                {
+                    //exit application
+                    mainMenu = false;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter one of the following.\n[1]To login\n[2]To register\n[0]To quit");
+                }
+            } while (mainMenu == true);
 
             //**choose location**
-            Console.WriteLine("\tOur stores include...\nKiddie World\nScary City\nRural Cabin\nRich Penthouse\n");
-            Console.WriteLine("Please enter the name of the store you would like to shop at.");
-            inventory.getInventory();
+
+            Console.WriteLine("Our stores include...");
+            dbAccess.DisplayStores();
+            Console.WriteLine("Please enter the number of the store you would like to shop at.");
+            dbAccess.getInventory();
             bool chooseStore = false;
-            string choseLocation = Console.ReadLine();
+            int storeID = Console.Read();
+            try
+            {
+                cartDB.CreateCart(storeID, customer.CustID);
+                Console.WriteLine("A new cart has been assigned.");
+            }
+            catch(Exception e) { Console.WriteLine(e); }
             do
             {   //**switch between locations**
-                if (choseLocation.ToLower() == "kiddie world")              //if kiddie world is chosen
+                if (storeID == 1)                                   //if kiddie world is chosen
                 {
                     chooseStore = true;                                     //end do...while loop
                     Console.WriteLine("\nYou have chosen Kiddie World.");
-                    Console.WriteLine("\nWe offer the following items: ");
-                    inventory.getKiddieWorld();                             //print product list from database
-                    Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
-                    string itemChoice = Console.ReadLine();
-                    cartDB.AddToCart(itemChoice);                           //add items to cart
-                    Console.WriteLine("Continue shopping at Kiddie World? Enter Yes or No.");
-                    string keepShopping = Console.ReadLine();
-                    while(keepShopping.ToUpper() == "YES")
-                    {
-                        inventory.getKiddieWorld();                             //print product list from database
-                        Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
-                        itemChoice = Console.ReadLine();
-                        cartDB.AddToCart(itemChoice);                           //add items to cart
-                        Console.WriteLine("Continue shopping at Kiddie World? Enter Yes or No.");
-                        keepShopping = Console.ReadLine();
-                    };
+                    Console.WriteLine("\nWe offer the following items:");
+                    dbAccess.DisplayProducts(1);                             //print product list
+                    Console.WriteLine("Please enter the number associated with the product you would like to purchase");
+                    string itemToAdd = Console.ReadLine();
+                    cartDB.AddItemToCart(itemToAdd);                      //add item to cart
+                    Console.WriteLine("The items in your cart include: ");
+                    cartDB.ViewCart();
+                    //"would you like to keep shopping?"
+
+                    /**Console.WriteLine("Which item would you like to add to your cart? Enter the product ID.");
+                    //string itemChoice = Console.ReadLine();
+                    //cartDB.AddToCart(itemChoice);                           //add items to cart
+                    ////Console.WriteLine("Continue shopping at Kiddie World? Enter Yes or No.");
+                    //string keepShopping = Console.ReadLine();
+                    //while (keepShopping.ToUpper() == "YES"){
+                    //    productAccess.getKiddieWorld(1);                             //print product list from database
+                    //    Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
+                    //    itemChoice = Console.ReadLine();
+                    //    cartDB.AddToCart(itemChoice);                           //add items to cart
+                    //    Console.WriteLine("Continue shopping at Kiddie World? Enter Yes or No.");
+                    //    keepShopping = Console.ReadLine();
+                    //};
+                    **/
                 }
-                else if (choseLocation.ToLower() == "scary city")           //else if scary city is chosen
+                else if (storeID == 2)           //else if scary city is chosen
                 {
                     chooseStore = true;                                     //end do...while loop
                     Console.WriteLine("\nYou have chosen Scary City.");
                     Console.WriteLine("\nWe offer the following items: ");
-                    inventory.getScaryCity();                               //prints product list
-                    Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
-                    string itemChoice = Console.ReadLine();
-                    cartDB.AddToCart(itemChoice);                           //add items to cart
-                    Console.WriteLine("Continue shopping at Scary City? Enter Yes or No.");
-                    string keepShopping = Console.ReadLine();
-                    while (keepShopping.ToUpper() == "YES")
-                    {
-                        inventory.getScaryCity();                             //print product list from database
-                        Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
-                        itemChoice = Console.ReadLine();
-                        cartDB.AddToCart(itemChoice);                           //add items to cart
-                        Console.WriteLine("Continue shopping at Scary City? Enter Yes or No.");
-                        keepShopping = Console.ReadLine();
-                    };
+                    dbAccess.DisplayProducts(2);                               //prints product list
+                    Console.WriteLine("Please enter the number associated with the product you would like to purchase");
+                    string itemToAdd = Console.ReadLine();
+                    cartDB.AddItemToCart(itemToAdd);                      //add item to cart
+                    Console.WriteLine("The items in your cart include: ");
+                    cartDB.ViewCart();
+
+                    /**Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
+                    //string itemChoice = Console.ReadLine();
+                    //cartDB.AddToCart(itemChoice);                           //add items to cart
+                    //Console.WriteLine("Continue shopping at Scary City? Enter Yes or No.");
+                    //string keepShopping = Console.ReadLine();
+                    //while (keepShopping.ToUpper() == "YES"){
+                    //    productAccess.getScaryCity(2);                             //print product list from database
+                    //    Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
+                    //    itemChoice = Console.ReadLine();
+                    //    cartDB.AddToCart(itemChoice);                           //add items to cart
+                    //    Console.WriteLine("Continue shopping at Scary City? Enter Yes or No.");
+                    //    keepShopping = Console.ReadLine();
+                    //};
+                    **/
                 }
-                else if (choseLocation.ToLower() == "rural cabin")          //else if rural cabin is chosen
+                else if (storeID == 3)          //else if rural cabin is chosen
                 {
                     chooseStore = true;                                     //end do...while loop
                     Console.WriteLine("\nYou have chosen Rural Cabin.");
                     Console.WriteLine("\nWe offer the following items: ");
-                    inventory.getRuralCabin();                              //prints product list
-                    Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
-                    string itemChoice = Console.ReadLine();
-                    cartDB.AddToCart(itemChoice);                           //add items to cart
-                    Console.WriteLine("Continue shopping at Rural Cabin? Enter Yes or No.");
-                    string keepShopping = Console.ReadLine();
-                    while (keepShopping.ToUpper() == "YES")
-                    {
-                        inventory.getRuralCabin();                             //print product list from database
-                        Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
-                        itemChoice = Console.ReadLine();
-                        cartDB.AddToCart(itemChoice);                           //add items to cart
-                        Console.WriteLine("Continue shopping at Rural Cabin? Enter Yes or No.");
-                        keepShopping = Console.ReadLine();
-                    };
+                    dbAccess.DisplayProducts(3);                              //prints product list
+                    Console.WriteLine("Please enter the number associated with the product you would like to purchase");
+                    string itemToAdd = Console.ReadLine();
+                    cartDB.AddItemToCart(itemToAdd);                      //add item to cart
+                    Console.WriteLine("The items in your cart include: ");
+                    cartDB.ViewCart();
+
+                    /**
+                    //Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
+                    //string itemChoice = Console.ReadLine();
+                    //cartDB.AddToCart(itemChoice);                           //add items to cart
+                    //Console.WriteLine("Continue shopping at Rural Cabin? Enter Yes or No.");
+                    //string keepShopping = Console.ReadLine();
+                    //while (keepShopping.ToUpper() == "YES"){
+                    //    productAccess.getRuralCabin(3);                             //print product list from database
+                    //    Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
+                    //    itemChoice = Console.ReadLine();
+                    //    cartDB.AddToCart(itemChoice);                           //add items to cart
+                    //    Console.WriteLine("Continue shopping at Rural Cabin? Enter Yes or No.");
+                    //    keepShopping = Console.ReadLine();
+                    //};
+                    **/
                 }
-                else if (choseLocation.ToLower() == "rich penthouse")       //else if rich penthouse is chosen
+                else if (storeID == 4)       //else if rich penthouse is chosen
                 {
-                    chooseStore = true;                                     //end do...while loop
+                    chooseStore = true;                                         //end do...while loop
                     Console.WriteLine("\nYou have chosen Rich Penthouse.");
                     Console.WriteLine("\nWe offer the following items: ");
-                    inventory.getRichPenthouse();                           //prints product list
-                    Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
-                    string itemChoice = Console.ReadLine();
-                    cartDB.AddToCart(itemChoice);                           //add items to cart
-                    Console.WriteLine("Continue shopping at Rich Penthouse? Enter Yes or No.");
-                    string keepShopping = Console.ReadLine();
-                    while (keepShopping.ToUpper() == "YES")
-                    {
-                        inventory.getRichPenthouse();                             //print product list from database
-                        Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
-                        itemChoice = Console.ReadLine();
-                        cartDB.AddToCart(itemChoice);                           //add items to cart
-                        Console.WriteLine("Continue shopping at Rich Penthouse? Enter Yes or No.");
-                        keepShopping = Console.ReadLine();
-                    };
+                    dbAccess.DisplayProducts(4);                           //prints product list
+                    Console.WriteLine("Please enter the number associated with the product you would like to purchase");
+                    string itemToAdd = Console.ReadLine();
+                    cartDB.AddItemToCart(itemToAdd);                      //add item to cart
+                    Console.WriteLine("The items in your cart include: ");
+                    cartDB.ViewCart();
+
+                    /**Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
+                    //string itemChoice = Console.ReadLine();
+                    //cartDB.AddToCart(itemChoice);                             //add items to cart
+                    //Console.WriteLine("Continue shopping at Rich Penthouse? Enter Yes or No.");
+                    //string keepShopping = Console.ReadLine();
+                    //while (keepShopping.ToUpper() == "YES"){
+                    //    productAccess.getRichPenthouse(4);                             //print product list from database
+                    //    Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
+                    //    itemChoice = Console.ReadLine();
+                    //    cartDB.AddToCart(itemChoice);                           //add items to cart
+                    //    Console.WriteLine("Continue shopping at Rich Penthouse? Enter Yes or No.");
+                    //    keepShopping = Console.ReadLine();
+                    //};**/
                 }
                 else                                                        //else repeat store locations
                 {
                     Console.WriteLine("\nPlease choose one of the following locations: ");
-                    Console.WriteLine("Kiddie World\nScary City\nRural Cabin\nRich Penthouse");
-                    choseLocation = Console.ReadLine();                     //read for next loop
+                    dbAccess.DisplayStores();
+                    storeID = Console.Read();                     //read for next loop
                 }
             } while (chooseStore == false);
-        }
+
+            bool addMore = false;
+
+            do
+            {
+                Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
+                string itemChoice = Console.ReadLine();
+
+            } while (addMore == false);
+        } 
     }
 }

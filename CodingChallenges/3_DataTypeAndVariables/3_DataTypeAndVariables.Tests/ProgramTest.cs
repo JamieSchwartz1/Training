@@ -49,7 +49,7 @@ namespace _3_DataTypeAndVariablesChallenge.Tests
             string result = Program.PrintValues(o);
 
             //Assert
-            Assert.Equal<string>(s, result);
+            Assert.Equal(s, result);
         }
 
         [Theory]
@@ -70,7 +70,7 @@ namespace _3_DataTypeAndVariablesChallenge.Tests
             }
             else if (s == "why")
             {
-                Assert.Equal(null, result);
+                Assert.Null(result);
             }
         }
     }

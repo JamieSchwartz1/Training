@@ -13,28 +13,34 @@ namespace _4_MethodsChallenge
 
         public static string GetName()
         {
-            throw new NotImplementedException("GetName() is not implemented yet0");
+            string name = Console.ReadLine();
+            return name;
         }
 
         public static string GreetFriend(string name)
         {
-            throw new NotImplementedException("GreetFriend() is not implemented yet");
+            string greet = $"Hello, {name}. You are my friend.";
+            return greet;
         }
 
         public static double GetNumber()
         {
-            throw new NotImplementedException("GetNumber() is not implemented yet");
-
+            string number = Console.ReadLine();
+            double.TryParse(number, out double result);
+            return result;
         }
 
         public static int GetAction()
         {
-            throw new NotImplementedException("GetAction() is not implemented yet");
+            string action = Console.ReadLine();
+            int.TryParse(action, out int input);
+            return input;
         }
 
         public static double DoAction(double x, double y, int action)
         {
-            throw new NotImplementedException("DoAction() is not implemented yet");
+            //i don't understand this one
+            return action;
         }
     }
 }

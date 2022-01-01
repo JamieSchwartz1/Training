@@ -16,7 +16,9 @@ namespace _7_GuessingGameChallenge
         /// <returns></returns>
         public static int GetRandomNumber()
         {
-            throw new NotImplementedException();
+            Random rnd = new Random();
+            int rand = rnd.Next(1, 100);
+            return rand;
         }
 
         /// <summary>
@@ -27,7 +29,10 @@ namespace _7_GuessingGameChallenge
         /// <returns></returns>
         public static int GetUsersGuess()
         {
-            throw new NotImplementedException();
+            string guess = Console.ReadLine();
+            int guessNum;
+            int.TryParse(guess, out guessNum);
+            return guessNum;
         }
 
         /// <summary>
@@ -43,7 +48,10 @@ namespace _7_GuessingGameChallenge
         /// <returns></returns>
         public static int CompareNums(int randomNum, int guess)
         {
-            throw new NotImplementedException();
+            int result;
+            result = (randomNum < guess) ? -1 :
+                (randomNum == guess) ? 0 : 1;
+            return result;
         }
 
         /// <summary>

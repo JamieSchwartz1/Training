@@ -11,6 +11,8 @@ namespace _3_DataTypeAndVariablesChallenge
             // Insert code here.
             //
             //
+            //PrintValues();
+            //StringToInt();
         }
 
         /// <summary>
@@ -25,7 +27,21 @@ namespace _3_DataTypeAndVariablesChallenge
         /// <returns></returns>
         public static string PrintValues(object obj)
         {
-            throw new NotImplementedException($"PrintValues() has not been implemented");
+            string isType = "";
+            switch (Type.GetTypeCode(typeof(object)))
+            {
+                case TypeCode.Int32:
+                    isType = "Datatype => int";
+                    Console.WriteLine(isType);
+                    break;
+                case TypeCode.String:
+                    isType = "Datatype => ulong";
+                    Console.WriteLine(isType);
+                    break;
+            }
+                
+            return isType;
+            
         }
 
         /// <summary>
@@ -39,7 +55,13 @@ namespace _3_DataTypeAndVariablesChallenge
         /// <returns></returns>
         public static int? StringToInt(string numString)
         {
-            throw new NotImplementedException($"StringToInt() has not been implemented");
+            int intString;
+            bool tryInt = Int32.TryParse(numString, out intString);
+            if(tryInt == false){
+                return null;
+            }
+
+            return intString;
 
         }
     }// end of class

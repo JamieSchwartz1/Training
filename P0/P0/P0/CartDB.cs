@@ -9,27 +9,24 @@ namespace P0
 {
     class CartDB
     {
-        ////list idea credit Miles Lenane (not in use as of 12/26)
         //list problem: unable to convert from string to SQL
-        //Customer custName = new Customer();
-        //public void CreateCart(Customer customer)
-        //{
-        //    string newStr = "Data source=JAMIESCHWARTZPC\\SQLEXPRESS;initial Catalog=P0;integrated security=true";
-        //    SqlConnection prodSQL = new SqlConnection(newStr);
-        //    prodSQL.Open();
-        //    string query = $"CREATE TABLE Cart_{customer.ToString()} (ProductID INT NOT NULL FOREIGN KEY REFERENCES FullProductList(ProductID)," +
-        //        "ProductName NVARCHAR(50) NOT NULL FOREIGN KEY REFERENCES FullProductList(ProductName)," +
-        //        "ProductPrice DECIMAL NOT NULL FOREIGN KEY REFERENCES FullProductList(ProductPrice)";
-        //    try
-        //    {
-        //        SqlCommand cmd = new SqlCommand(query, prodSQL);
-        //        int row = cmd.ExecuteNonQuery();
-        //        prodSQL.Close();
-        //    }
-        //    catch (Exception e) { Console.WriteLine(e); }
-        //}
+        DatabaseAccess dbAccess = new DatabaseAccess();
+        Customer customer = new Customer();
+        Stores store = new Stores();
 
-        //public void AddToCart(string itemToAdd)
+        public void CreateCart(int storeID, int custID)
+        {
+            dbAccess.NewCart(storeID, customer.CustID);
+        }
+        public void AddItemToCart(string itemToAdd)
+        {
+            dbAccess.AddItemToCart(itemToAdd);
+        }
+        public void ViewCart()
+        {
+            dbAccess.ViewCart();
+        }
+
         //{
         //    string newStr = "Data source=JAMIESCHWARTZPC\\SQLEXPRESS;initial Catalog=P0;integrated security=true";
         //    SqlConnection prodSQL = new SqlConnection(newStr);
@@ -41,35 +38,19 @@ namespace P0
         //        //if itemToAdd is not an int
         //        if (isNum == false)
         //        {
-        //            string querystring = $"SELECT ProductID, ProductPrice INTO Cart_{custName} FROM FullProductList " +
-        //                $"WHERE ProductName = '{itemToAdd.ToLower()}'";
-        //            SqlCommand cmd = new SqlCommand(querystring, prodSQL);
-        //            SqlDataReader dr = cmd.ExecuteReader();     //10am 12/26 something wrong at execute reader
-        //            while (dr.Read() == false)
-        //            {
-        //                dr.Close();
-        //                Console.WriteLine("Item does not exist. Please enter the product name or product ID.");
-        //                itemToAdd = Console.ReadLine();
-        //                querystring = $"SELECT ProductID, ProductPrice INTO Cart_{custName} FROM FullProductList " +
-        //                    $"WHERE ProductName = '{itemToAdd.ToLower()}'";
-        //                cmd = new SqlCommand(querystring, prodSQL);
-        //                dr = cmd.ExecuteReader();
-        //            }
-        //            Console.WriteLine($"Successfully added item {itemToAdd} to Cart_{custName}.");
-        //            dr.Close();
+        //            Console.WriteLine("Please enter the number associated with the product.");
         //        }
         //        else
         //        {
-        //            string querystring = $"SELECT ProductID, ProductPrice INTO Cart_{custName} FROM FullProductList " +
-        //                $"WHERE ProductID = '{itemNum}'";
+        //            string querystring = $"INSERT INTO ItemsInCart VALUES ProductID, ProductPrice FROM FullProductList";
         //            SqlCommand cmd = new SqlCommand(querystring, prodSQL);
-        //            SqlDataReader dr = cmd.ExecuteReader();     //10am 12/26 something wrong at execute reader
+        //            SqlDataReader dr = cmd.ExecuteReader();
         //            while (dr.Read() == false)
         //            {
         //                dr.Close();
         //                Console.WriteLine("Item does not exist. Please enter the product name or product ID.");
         //                itemToAdd = Console.ReadLine();
-        //                querystring = $"SELECT ProductID, ProductPrice INTO Cart_{custName} FROM FullProductList " +
+        //                querystring = $"SELECT ProductID, ProductPrice FROM FullProductList " +
         //                    $"WHERE ProductID = '{itemNum}'";
         //                cmd = new SqlCommand(querystring, prodSQL);
         //                dr = cmd.ExecuteReader();
@@ -81,7 +62,7 @@ namespace P0
         //    catch (Exception e) { Console.WriteLine("Error: " + e); }
         //}
 
-        Dictionary<int, decimal> productDict = new Dictionary<int, decimal>();  //productID and price
+        /**Dictionary<int, decimal> productDict = new Dictionary<int, decimal>();  //productID and price
         GetProduct productGet = new GetProduct();
 
         public void AddToCart(string itemToAdd)
@@ -111,6 +92,7 @@ namespace P0
                 Console.WriteLine(productDict);
             }
         }
+        **/
 
         /**public void AddToCart(string itemToAdd)
         {
