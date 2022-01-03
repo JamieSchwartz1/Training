@@ -41,22 +41,37 @@ namespace P0Testing
             MockDBAccess conn = new MockDBAccess();
 
             //act
-            List<Customer> customersList = conn.GetCustomers();
+            List<Customer> customersList = conn.GetCustomers(new Customer { CustName = "jamie"}.ToString());
 
             //assert
             Assert.Equal(3, customersList.Count);
         }
         [Fact]
-        public void CreateNewCart_ReturnIntCartID(int[] input)
+        public void LogInCust_ReturnFalse()
+        {
+            MockDBAccess conn = new MockDBAccess();
+
+            bool customersList = conn.badCust();
+
+            Assert.False(false, customersList.ToString());
+
+        }
+        [Fact]
+        public void ViewShoppingCart_ReturnPriceTotal()
         {
             //arrange
             MockDBAccess conn = new MockDBAccess();
+            decimal totalPrice = 0;
 
             //act
-            int result = newCart.NewCart(1, 1);
-            
+            List<GetProduct> products = conn.GetShoppingCartItems();
+            foreach(var p in products)
+            {
+                totalPrice += p.ProductPrice;
+            }
+
             //assert
-            Assert.Equal();
+            Assert.Equal("209.97", totalPrice.ToString());
         }
         //public void methodName()
         //{

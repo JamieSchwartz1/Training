@@ -114,7 +114,7 @@ namespace P0
                 product.ProductID = dr.GetInt32(0);
                 product.ProductName = dr[1].ToString();
                 product.ProductDesc = dr[2].ToString();
-                product.ProductSect = dr[3].ToString();
+                product.ProductPrice = Int32.Parse(dr[3].ToString());
             }
             dr.Close();
         }
@@ -132,7 +132,7 @@ namespace P0
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    Console.WriteLine($" [{dr[0].ToString()}] {dr[1].ToString()}\t${dr[2].ToString()}\t{dr[3].ToString()}");
+                    Console.WriteLine($" [{dr[0].ToString()}] {dr[1].ToString()}\t${dr[3].ToString()}\t{dr[2].ToString()}");
                 }
                 dr.Close();
             }

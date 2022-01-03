@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace P0
 {
-    class CartDB
+    public class CartDB
     {
         //list problem: unable to convert from string to SQL
         DatabaseAccess dbAccess = new DatabaseAccess();

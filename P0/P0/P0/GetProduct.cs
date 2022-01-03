@@ -12,7 +12,6 @@ namespace P0
         public string ProductName { get; set; }
         public decimal ProductPrice { get; set; }
         public string ProductDesc { get; set; }
-        public string ProductSect { get; set; }
         public int ProductCount { get; set; }
     }
 }

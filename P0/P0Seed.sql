@@ -10,7 +10,6 @@ DROP TABLE Customer
 CREATE TABLE Customer (
 CustomerID INT NOT NULL PRIMARY KEY IDENTITY(1,1),
 CustName nvarchar(30) NOT NULL, 
-CustEmail nvarchar(45) NOT NULL,
 CustPass nvarchar(45) NOT NULL)
 
 CREATE TABLE StoresList (		--credit Craig Coles
@@ -32,12 +31,11 @@ CartTotal decimal(6, 2))			-- sum ProductTotal
 
 --able to add and delete single items from this table
 CREATE TABLE ItemsInCart(		--credit Craig Coles
-CartItemID INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+LineID uniqueidentifier PRIMARY KEY default NEWID(),
 CartID INT NOT NULL FOREIGN KEY REFERENCES ShoppingCart(CartID),
-LineID uniqueidentifier NOT NULL,
 ProductID INT NOT NULL FOREIGN KEY REFERENCES FullProductList(ProductID),
 ProductTotal decimal(6, 2),		-- ProductPrice inserts into productTotal
-ItemQuantity INT NOT NULL)
+ItemQuantity INT)
 
 CREATE TABLE Orders(			--credit Craig Coles
 OrderID INT NOT NULL PRIMARY KEY IDENTITY(1,1),
@@ -112,3 +110,5 @@ INSERT INTO Inventory (StoreID, ProductID, ProductCount)
 VALUES (4, 8, 10)
 INSERT INTO Inventory (StoreID, ProductID, ProductCount) 
 VALUES (4, 12, 10)
+
+INSERT INTO Customer VALUES ('jamie', 'test1')
