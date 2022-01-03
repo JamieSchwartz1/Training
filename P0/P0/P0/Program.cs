@@ -40,7 +40,7 @@ namespace P0
             DatabaseAccess dbAccess = new DatabaseAccess();
             CartDB cartDB = new CartDB();
             Customer customer = new Customer();
-            
+
             Console.WriteLine("Welcome to Fun-iture! We sell fun furniture");
             //switch statement for login, register or quit -- credit to Kevin 
             Console.WriteLine("In order to start, choose one of the following.\n[1]To login\n[2]To register\n[0]To quit");
@@ -59,7 +59,7 @@ namespace P0
                     customer.AddCustomer();
                     mainMenu = false;
                 }
-                else if(menuChoice == 0)
+                else if (menuChoice == 0)
                 {
                     //exit application
                     mainMenu = false;
@@ -83,7 +83,7 @@ namespace P0
                 cartDB.CreateCart(storeID, customer.CustID);
                 Console.WriteLine("A new cart has been assigned.");
             }
-            catch(Exception e) { Console.WriteLine(e); }
+            catch (Exception e) { Console.WriteLine(e); }
             do
             {   //**switch between locations**
                 if (storeID == 1)                                   //if kiddie world is chosen
@@ -211,6 +211,6 @@ namespace P0
                 string itemChoice = Console.ReadLine();
 
             } while (addMore == false);
-        } 
+        }
     }
 }

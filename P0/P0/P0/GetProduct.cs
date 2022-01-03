@@ -14,6 +14,5 @@ namespace P0
         public string ProductDesc { get; set; }
         public string ProductSect { get; set; }
         public int ProductCount { get; set; }
-        //public string Customer { get; set; }
     }
 }

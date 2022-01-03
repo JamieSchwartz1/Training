@@ -10,6 +10,10 @@ namespace P0
     public class Customer
     {
         DatabaseAccess dbAccess = new DatabaseAccess();
+        public int CustID { get; set; }
+        public string CustName { get; set; }
+        public string CustPass { get; set; }
+
         public void LogInCustomer()
         {
             //prompt user for name and password, compare name and password to data in SQL table
@@ -28,7 +32,7 @@ namespace P0
                 dbAccess.PasswordLogIn(password);
 
                 Console.WriteLine($"Please note that your customer ID is [{dbAccess.ViewCustID(custName)}]");
-                
+
                 CustID = dbAccess.ViewCustID(custName);
             }
             catch (Exception es) { Console.WriteLine(es); }
@@ -40,6 +44,5 @@ namespace P0
             dbAccess.CreateCustomer(custName);
             Console.WriteLine($"Please note that your customer ID is [{dbAccess.ViewCustID(custName)}]");
         }
-        public int CustID { get; set; }
     }
 }

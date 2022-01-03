@@ -64,7 +64,6 @@ namespace P0
 
         /**Dictionary<int, decimal> productDict = new Dictionary<int, decimal>();  //productID and price
         GetProduct productGet = new GetProduct();
-
         public void AddToCart(string itemToAdd)
         {
             int itemNum;
@@ -83,7 +82,6 @@ namespace P0
                 Console.WriteLine("Could not add item.");
             }
         }
-
         public void ViewCart()
         {
             Console.WriteLine("Items in cart: ");
@@ -117,14 +115,12 @@ namespace P0
             string newStr = "Data source=JAMIESCHWARTZPC\\SQLEXPRESS;initial Catalog=P0;integrated security=true";
             SqlConnection prodSQL = new SqlConnection(newStr);
             prodSQL.Open();
-
             try
             {
                 string querystring = $"SELECT ProductID, ProductPrice FROM FullProductList " +
                         $"WHERE ProductName = '{itemToAdd}' OR ProductID = '{itemToAdd}'";
                 SqlCommand cmd = new SqlCommand(querystring, prodSQL);
                 SqlDataReader dr = cmd.ExecuteReader();
-
                 while (dr.Read() == false)
                 {
                     dr.Close();
