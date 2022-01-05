@@ -64,36 +64,29 @@ namespace P0
 
         /**Dictionary<int, decimal> productDict = new Dictionary<int, decimal>();  //productID and price
         GetProduct productGet = new GetProduct();
-        public void AddToCart(string itemToAdd)
-        {
+        public void AddToCart(string itemToAdd){
             int itemNum;
-            if(itemToAdd is string && itemToAdd == productGet.ProductName)
-            {
+            if(itemToAdd is string && itemToAdd == productGet.ProductName){
                 productDict.Add(productGet.ProductID, productGet.ProductPrice);
                 Console.WriteLine("Successfully added " + itemToAdd + " to the cart.");
             }
-            else if (int.TryParse(itemToAdd, out itemNum))
-            {
+            else if (int.TryParse(itemToAdd, out itemNum)){
                 productDict.Add(productGet.ProductID, productGet.ProductPrice);     //"already added"
                 Console.WriteLine("Successfully added " + itemNum + " to the cart.");
             }
-            else
-            {
+            else{
                 Console.WriteLine("Could not add item.");
             }
         }
-        public void ViewCart()
-        {
+        public void ViewCart(){
             Console.WriteLine("Items in cart: ");
-            for(int i = 0; i < productDict.Count(); i++)
-            {
+            for(int i = 0; i < productDict.Count(); i++){
                 Console.WriteLine(productDict);
             }
         }
         **/
 
-        /**public void AddToCart(string itemToAdd)
-        {
+        /**public void AddToCart(string itemToAdd){
             the cart itself must exist for each customerID, not for all customers
             readline item to buy, then add it to cart
             to open sql database
@@ -115,14 +108,12 @@ namespace P0
             string newStr = "Data source=JAMIESCHWARTZPC\\SQLEXPRESS;initial Catalog=P0;integrated security=true";
             SqlConnection prodSQL = new SqlConnection(newStr);
             prodSQL.Open();
-            try
-            {
+            try {
                 string querystring = $"SELECT ProductID, ProductPrice FROM FullProductList " +
                         $"WHERE ProductName = '{itemToAdd}' OR ProductID = '{itemToAdd}'";
                 SqlCommand cmd = new SqlCommand(querystring, prodSQL);
                 SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read() == false)
-                {
+                while (dr.Read() == false) {
                     dr.Close();
                     Console.WriteLine("Item does not exist. Please enter the product name or product ID.");
                     itemToAdd = Console.ReadLine();
@@ -132,8 +123,7 @@ namespace P0
                     dr = cmd.ExecuteReader();
                 }
                 Console.WriteLine($"Successfully added item {itemToAdd} to cart");
-                foreach (int item in itemToAdd)
-                {
+                foreach (int item in itemToAdd) {
                     Console.WriteLine("Items in cart: " + itemToAdd);
                 }
                 dr.Close();
@@ -175,11 +165,8 @@ namespace P0
             }
             catch (Exception e) { Console.WriteLine("Error: " + e); }
         }
-        **/
-        /**public void ViewCart()
-        {
-            try
-            {
+        public void ViewCart() {
+            try {
                 string newStr = "Data source=JAMIESCHWARTZPC\\SQLEXPRESS;initial Catalog=P0;integrated security=true";
                 SqlConnection prodSQL = new SqlConnection(newStr);
                 prodSQL.Open();
@@ -191,17 +178,14 @@ namespace P0
             }
             catch (Exception e) { Console.WriteLine("Could not view cart" + e); }
         }
-        **/
-        /**public static void RemoveFromCart(string itemToRemove)
-        {
+        public static void RemoveFromCart(string itemToRemove) {
             Console.WriteLine("Which item would you like to remove?");
             itemToRemove = Console.ReadLine();
             string newStr = "Data source=JAMIESCHWARTZPC\\SQLEXPRESS;initial Catalog=P0;integrated security=true";
             SqlConnection prodSQL = new SqlConnection(newStr);
             prodSQL.Open();
             string querystring = $"DELETE FROM dbo.Cart WHERE ProductID = '{itemToRemove}';";
-            try
-            {
+            try {
                 SqlCommand cmd = new SqlCommand(querystring, prodSQL);
                 int row = cmd.ExecuteNonQuery();
                 Console.WriteLine("You have successfully removed the item.");

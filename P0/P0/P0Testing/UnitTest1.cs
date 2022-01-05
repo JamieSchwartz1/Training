@@ -39,9 +39,10 @@ namespace P0Testing
         {
             //arrange
             MockDBAccess conn = new MockDBAccess();
+            StoreLogic storeLogic = new StoreLogic();
 
             //act
-            List<Customer> customersList = conn.GetCustomers(new Customer { CustName = "jamie"}.ToString());
+            List<Customer> customersList = conn.GetCustomers();
 
             //assert
             Assert.Equal(3, customersList.Count);

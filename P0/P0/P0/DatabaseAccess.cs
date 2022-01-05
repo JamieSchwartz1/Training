@@ -8,10 +8,11 @@ using System.Data.SqlClient;
 namespace P0
 {
     //anything that uses a query will go in this Namespace!!!
-    public class DatabaseAccess
+    public class DatabaseAccess : IDataBaseAccess
     {
         string newStr = "Data source=JAMIESCHWARTZPC\\SQLEXPRESS;initial Catalog=P0;integrated security=true";
         public readonly SqlConnection connect;
+        public int CartID { get; set; }
         public DatabaseAccess()
         {
             this.connect = new SqlConnection(newStr);
@@ -114,7 +115,7 @@ namespace P0
                 product.ProductID = dr.GetInt32(0);
                 product.ProductName = dr[1].ToString();
                 product.ProductDesc = dr[2].ToString();
-                product.ProductPrice = Int32.Parse(dr[3].ToString());
+                product.ProductPrice = decimal.Parse(dr[3].ToString());
             }
             dr.Close();
         }
@@ -152,20 +153,42 @@ namespace P0
                 dr.Close();
             }
         }
-        public void NewCart(int storeID, int custID)
+        public int getActiveCustID(string custName)
         {
-            string querystring = $"INSERT INTO ShoppingCart (StoreID, CustomerID) " +
-                $"VALUES (" +
-                $"(SELECT StoreID FROM StoresList WHERE StoreID = {storeID}), " +
-                $"(SELECT CustomerID FROM Customer WHERE CustomerID = {custID}) " +
-                $");";
-            SqlCommand cmd = new SqlCommand(querystring, connect);
+            int custID = 0;
+            SqlCommand cmd = new SqlCommand($"SELECT CustomerID FROM dbo.Customer WHERE CustName = '{custName}';", connect);
             SqlDataReader dr = cmd.ExecuteReader();
             while (dr.Read())
             {
-                Console.WriteLine($"Your CartID is {dr[0].ToString()}.");
+                for (int i = 0; i < dr.FieldCount; i++)
+                {
+                    custID = Convert.ToInt32(dr[0].ToString());
+                }
             }
+            Console.WriteLine("Your Customer ID is " + custID);
             dr.Close();
+            return custID;
+        }
+        public int NewCart(int storeID, int custID)
+        {
+            CartID = 0;
+            string querystring = $"INSERT INTO ShoppingCart (StoreID, CustomerID) " +
+                $"VALUES ('{storeID}', '{custID}')";
+            List<int> newCart = new List<int>();
+            SqlCommand cmd = new SqlCommand(querystring, connect);
+            SqlDataReader dr = cmd.ExecuteReader();
+            dr.Close();
+            string querys1 = "SELECT CartID FROM ShoppingCart";
+            SqlCommand cmd1 = new SqlCommand(querys1, connect);
+            SqlDataReader dr1 = cmd1.ExecuteReader();
+            while (dr1.Read())
+            {
+                CartID = Convert.ToInt32(dr1[0].ToString());
+            }
+            dr1.Close();
+            Console.WriteLine($"A new cart has been assigned. Your cart ID is {CartID}");
+            newCart.Add(CartID);
+            return CartID;
         }
         public void AddItemToCart(string itemToAdd)
         {
@@ -180,17 +203,23 @@ namespace P0
                 }
                 else
                 {
-                    string querystring = $"INSERT INTO ItemsInCart(ProductID, ProductTotal) " +
-                        $"SELECT ProductID, ProductPrice FROM FullProductList WHERE ProductID = '{itemNum}'";
+                    string querystring = $"INSERT INTO ItemsInCart(CartID, ProductID, ProductTotal) " +
+                        $"SELECT s.CartID, f.ProductID, f.ProductPrice FROM ShoppingCart s " +
+                        $"INNER JOIN Inventory i on s.StoreID = i.StoreID " +
+                        $"INNER JOIN FullProductList f on i.ProductID = f.ProductID " +
+                        $"WHERE f.ProductID = '{itemNum}' AND s.CartID = '{CartID}'";
                     SqlCommand cmd = new SqlCommand(querystring, connect);
                     SqlDataReader dr = cmd.ExecuteReader();
-                    while (dr.Read() == false)
+                    while (dr.Read() == true)
                     {
                         dr.Close();
                         Console.WriteLine("Item does not exist. Please enter the product name or product ID.");
-                        itemToAdd = Console.ReadLine();
-                        querystring = $"INSERT INTO ItemsInCart(ProductID, ProductTotal) " +
-                            $"SELECT ProductID, ProductPrice FROM FullProductList WHERE ProductID = '{itemNum}'";
+                        itemNum = Console.Read();
+                        querystring = $"INSERT INTO ItemsInCart(CartID, ProductID, ProductTotal) " +
+                        $"SELECT s.CartID, f.ProductID, f.ProductPrice FROM ShoppingCart s " +
+                        $"INNER JOIN Inventory i on s.StoreID = i.StoreID " +
+                        $"INNER JOIN FullProductList f on i.ProductID = f.ProductID " +
+                        $"WHERE f.ProductID = '{itemNum}' AND s.CartID = '{CartID}'";
                         cmd = new SqlCommand(querystring, connect);
                         dr = cmd.ExecuteReader();
                     }
@@ -202,15 +231,19 @@ namespace P0
         }
         public void ViewCart()
         {
+            double priceSum = 0;
             string querystring = $"SELECT * FROM ItemsInCart";
             using (SqlCommand cmd = new SqlCommand(querystring, connect))
             {
                 SqlDataReader dr = cmd.ExecuteReader();
+
                 while (dr.Read())
                 {
-                    Console.WriteLine($" [{dr[3].ToString()}] {dr[4].ToString()}");
+                    priceSum += Convert.ToDouble(dr[3]);
+                    Console.WriteLine($" CartID: {dr[1].ToString()}\t" +
+                        $"ProductID: {dr[2].ToString()}\t" +
+                        $"Total Price: {priceSum}");
                 }
-                dr.Close();
             }
         }
     }

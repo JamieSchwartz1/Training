@@ -9,7 +9,7 @@ namespace P0Testing
 {
     internal class MockDBAccess
     {
-        public List<Customer> GetCustomers(string name)
+        public List<Customer> GetCustomers()
         {
             List<Customer> customers = new List<Customer>();
             Customer cust1 = new Customer()

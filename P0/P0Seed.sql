@@ -10,6 +10,7 @@ DROP TABLE Customer
 CREATE TABLE Customer (
 CustomerID INT NOT NULL PRIMARY KEY IDENTITY(1,1),
 CustName nvarchar(30) NOT NULL, 
+CustEmail nvarchar(45) NOT NULL,
 CustPass nvarchar(45) NOT NULL)
 
 CREATE TABLE StoresList (		--credit Craig Coles
@@ -111,4 +112,4 @@ VALUES (4, 8, 10)
 INSERT INTO Inventory (StoreID, ProductID, ProductCount) 
 VALUES (4, 12, 10)
 
-INSERT INTO Customer VALUES ('jamie', 'test1')
+INSERT INTO Customer VALUES ('jamie', 'email', 'test1')

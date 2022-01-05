@@ -19,9 +19,12 @@ namespace _11_ArraysAndListsChallenge
         /// <returns></returns>
         public static double AverageOfValues(int[] array)
         {
-            int int0 = array[0];
-            int intLast = array[array.Length];
-            double average = (int0 + intLast) / 2;
+            int sum = 0;
+            for(int i = 0; i < array.Length; i++)
+            {
+                sum += array[i];
+            }
+            float average = (float) sum / array.Length;
             return average;
         }
 

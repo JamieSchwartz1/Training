@@ -35,41 +35,95 @@ namespace P0
          * 6. Orders
          * 7. Inventory
          */
+        public static int CartItemID { get; set; }
+        public static int LineID { get; set; }
+        public static int CartID { get; set; }
+        public static int ProductID { get; set; }
+        public static float ItemTotal { get; set; }
         static void Main(string[] args)
         {
             DatabaseAccess dbAccess = new DatabaseAccess();
             CartDB cartDB = new CartDB();
             Customer customer = new Customer();
+            int CustID = 0;
 
             Console.WriteLine("Welcome to Fun-iture! We sell fun furniture");
             //switch statement for login, register or quit -- credit to Kevin 
             Console.WriteLine("In order to start, choose one of the following.\n[1]To login\n[2]To register\n[0]To quit");
-            int menuChoice = Convert.ToInt32(Console.ReadLine());
             bool mainMenu = true;
-            //switch between: log in (already created user) && register (create user)
+            //choose between: log in (already created user) && register (create user)
             do
             {
+                int menuChoice = Convert.ToInt32(Console.ReadLine());
                 if (menuChoice == 1)
                 {
-                    customer.LogInCustomer();
-                    mainMenu = false;
+                    dbAccess.ViewCustomers();                   //view previously created customer names
+                    Console.WriteLine("\nPlease enter your name: ");
+                    string custName = Console.ReadLine();
+                    if (custName == "0")
+                    {
+                        mainMenu = true;
+                    }
+                    else
+                    {
+                        dbAccess.LogInCustomer(custName);           //test against previous names to see if it matches
+                        Console.WriteLine("\nPlease enter your password: ");
+                        string password = Console.ReadLine();
+                        dbAccess.PasswordLogIn(password);           //test against password to specific name
+                        CustID = dbAccess.getActiveCustID(custName);    //set CustID equal to the active ID
+                        mainMenu = false;
+                    }
                 }
                 else if (menuChoice == 2)
                 {
-                    customer.AddCustomer();
-                    mainMenu = false;
+                    Console.WriteLine("\nPlease enter your name: ");
+                    string custName = Console.ReadLine();
+                    if (custName == "0")
+                    {
+                        mainMenu = true;
+                    }
+                    else
+                    {
+                        dbAccess.CreateCustomer(custName);          //create name and password
+                        CustID = dbAccess.getActiveCustID(custName);    //set CustID equal to the active ID
+                        mainMenu = false;
+                    }
                 }
                 else if (menuChoice == 0)
                 {
-                    //exit application
+                    //exit
                     mainMenu = false;
                 }
                 else
                 {
-                    Console.WriteLine("Please enter one of the following.\n[1]To login\n[2]To register\n[0]To quit");
+                    Console.WriteLine("\nPlease enter one of the following." +
+                        "\n[1] To login\n[2] To register\n[0] To quit");
                 }
             } while (mainMenu == true);
-
+            /**do
+            //{
+            //    if (menuChoice == 1)
+            //    {
+            //        customer.LogInCustomer();
+            //        dbAccess.getActiveCustID(customer);
+            //        mainMenu = false;
+            //    }
+            //    else if (menuChoice == 2)
+            //    {
+            //        customer.AddCustomer();
+            //        mainMenu = false;
+            //    }
+            //    else if (menuChoice == 0)
+            //    {
+            //        //exit application
+            //        mainMenu = false;
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("Please enter one of the following.\n[1]To login\n[2]To register\n[0]To quit");
+            //    }
+            //} while (mainMenu == true);
+            **/
             //**choose location**
 
             Console.WriteLine("Our stores include...");
@@ -77,10 +131,11 @@ namespace P0
             Console.WriteLine("Please enter the number of the store you would like to shop at.");
             dbAccess.getInventory();
             bool chooseStore = false;
-            int storeID = Console.Read();
+            string storestring = Console.ReadLine();
+            int storeID = Int32.Parse(storestring);
             try
             {
-                cartDB.CreateCart(storeID, customer.CustID);
+                dbAccess.NewCart(storeID, CustID);
                 Console.WriteLine("A new cart has been assigned.");
             }
             catch (Exception e) { Console.WriteLine(e); }
@@ -94,9 +149,9 @@ namespace P0
                     dbAccess.DisplayProducts(1);                             //print product list
                     Console.WriteLine("Please enter the number associated with the product you would like to purchase");
                     string itemToAdd = Console.ReadLine();
-                    cartDB.AddItemToCart(itemToAdd);                      //add item to cart
+                    dbAccess.AddItemToCart(itemToAdd);                      //add item to cart
                     Console.WriteLine("The items in your cart include: ");
-                    cartDB.ViewCart();
+                    dbAccess.ViewCart();
                     //"would you like to keep shopping?"
 
                     /**Console.WriteLine("Which item would you like to add to your cart? Enter the product ID.");
@@ -122,9 +177,9 @@ namespace P0
                     dbAccess.DisplayProducts(2);                               //prints product list
                     Console.WriteLine("Please enter the number associated with the product you would like to purchase");
                     string itemToAdd = Console.ReadLine();
-                    cartDB.AddItemToCart(itemToAdd);                      //add item to cart
+                    dbAccess.AddItemToCart(itemToAdd);                      //add item to cart
                     Console.WriteLine("The items in your cart include: ");
-                    cartDB.ViewCart();
+                    dbAccess.ViewCart();
 
                     /**Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
                     //string itemChoice = Console.ReadLine();
@@ -149,9 +204,9 @@ namespace P0
                     dbAccess.DisplayProducts(3);                              //prints product list
                     Console.WriteLine("Please enter the number associated with the product you would like to purchase");
                     string itemToAdd = Console.ReadLine();
-                    cartDB.AddItemToCart(itemToAdd);                      //add item to cart
+                    dbAccess.AddItemToCart(itemToAdd);                      //add item to cart
                     Console.WriteLine("The items in your cart include: ");
-                    cartDB.ViewCart();
+                    dbAccess.ViewCart();
 
                     /**
                     //Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
@@ -177,9 +232,9 @@ namespace P0
                     dbAccess.DisplayProducts(4);                           //prints product list
                     Console.WriteLine("Please enter the number associated with the product you would like to purchase");
                     string itemToAdd = Console.ReadLine();
-                    cartDB.AddItemToCart(itemToAdd);                      //add item to cart
+                    dbAccess.AddItemToCart(itemToAdd);                      //add item to cart
                     Console.WriteLine("The items in your cart include: ");
-                    cartDB.ViewCart();
+                    dbAccess.ViewCart();
 
                     /**Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
                     //string itemChoice = Console.ReadLine();
@@ -203,14 +258,14 @@ namespace P0
                 }
             } while (chooseStore == false);
 
-            bool addMore = false;
+            //bool addMore = false;
 
-            do
-            {
-                Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
-                string itemChoice = Console.ReadLine();
+            //do
+            //{
+            //    Console.WriteLine("Which item would you like to add to your cart? Enter the name of the item.");
+            //    string itemChoice = Console.ReadLine();                
 
-            } while (addMore == false);
+            //} while (addMore == false);
         }
     }
 }
