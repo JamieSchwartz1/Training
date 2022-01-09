@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<!-- credit Craig Coles. I copied his code but commented my interpretation -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    /* style for elements with className "title" */
+        .title{  
+            text-align: center;
+            font-size: 40pt;
+        }
+    /* style for elements with className "center" */
+        .center {        
+            font-size: 14pt;
+            padding: 5px;
+        }
+    /* style for elements with className "mainButton" */
+        .mainButton {
+            background-color: #570066;
+                color: #FFFFFF;
+                text-align: center;
+                width: 200px;
+                font-size: 20px;
+        }
+    /* style for elements with className "button" */
+        .button{
+            background-color: #570066;
+            color: #FFFFFF;
+            padding: 5px;
+            border-radius: 10px;
+            margin-left:-90px;
+            height: 30px;
+            width: 100px;
+        }
+    /* style for elements with className "restartbutton" */
+        .restartbutton{
+            background-color: #570066;
+            color: #FFFFFF;
+            padding: 5px;
+            border-radius: 10px;
+            margin-left: 300px;
+            width: 200px;
+            height: 100px;
+            font-size: 20pt;
+        }
+    /* style for elements with className "alerts" */
+        .alerts{
+            color: red;
+        }
+    /* style for elements with className "enterScreens" */
+        .enterScreens{
+            font-size: 14pt;
+            height: 30px;
+            margin: 100px;
+        }
+    /* style for elements with className "enterText" */
+        .enterText{
+            width: clamp(200px, 50% + 20px, 800px);
+            text-align: center;
+            margin-left: -130px;
+            font-size: 40pt;
+        }
+    /* style for elements with className "results" */
+        .results{
+            color:rgb(4, 10, 65);
+            text-align: left;
+            font-size: 24pt;
+            font-weight: bold;
+        }
+    /* style for h3 tags */
+        h3{
+            width: clamp(200px, 50% + 20px, 800px);
+            font-size: 20pt;    
+        }
+    /* style for span tags */
+        span{
+
+            background-color: green;
+            color: white;
+            font-size: 12pt;
+        }
+    /* style for p tags */
+        p {
+            height: 10%;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        //1. create element
+        //2. append element to document's body
+        //3. give element a class name
+        //4. set inner text of element
+        let intro = document.createElement('p');
+        document.body.appendChild(intro);
+        intro.className = `title`;
+        intro.innerText = 'Welcome to SweetNSalty!';
+
+        //1. create element
+        //2. append element to document's body
+        //3. give element a class name
+        //4. set inner text of element
+        let userInstructions = document.createElement('p');
+        document.body.appendChild(userInstructions);
+        userInstructions.className = 'center';
+        userInstructions.innerHTML = ("You will be required to choose a starting number and an ending number. <br>" +
+            "The range between the two numbers will be displayed to you.<br>" +
+            "Avoid using negative numbers, keep the range more than 200 apart and no larger than 10,000 apart,<br>" +
+            "and the starting number should be lower than the ending number.<br>" +
+            "* Numbers that are multiples of 3 with display 'sweet'.<br>" +
+            "* Numbers that are multiples of 5 with display 'salty'.<br>" + 
+            "* Numbers that are multiples of both will display 'SweetNSalty'.<br>" +
+            "* * Click the 'Start' button to begin!.");
+
+        //1. create element
+        //2. append element to document's body
+        let alertMessage = document.createElement('h5');
+        document.body.appendChild(alertMessage);
+
+        //1. create element
+        //2. append element to document's body
+        //3. give element a class name
+        //4. set inner text of element
+        let startButton = document.createElement('button');
+        startButton.className = 'mainButton';
+        document.body.appendChild(startButton);
+        startButton.innerText = 'Start!';
+
+        //input first number screen
+        //1. create element
+        //2. append element to document's body
+        //3. give element a class name
+        let firstNumText = document.createElement('h3');
+        firstNumText.className = 'enterText';
+        let inputFirstNum = document.createElement('input');
+        inputFirstNum.className = 'enterScreens';
+        let submitFirstNum = document.createElement('button');
+        submitFirstNum.className = 'button';
+        let firstNum = 0;
+
+        //input ending number screen
+        //1. create element
+        //2. append element to document's body
+        //3. give element a class name
+        let finalNumText = document.createElement('h3');
+        finalNumText.className = 'enterText';
+        let inputLastNum = document.createElement('input');
+        inputLastNum.className = 'enterScreens';
+        let submitLastNum = document.createElement('button');
+        submitLastNum.className = 'button';
+        let finalNum = 0;
+
+        //create elements
+        let finalSweetText = document.createElement('p');
+        let finalSaltyText = document.createElement('p');
+        let finalSweetnSaltyText = document.createElement('p');
+
+        //1. create element
+        //2. give element a class name
+        //3. set inner text of element
+        let restartButton = document.createElement('button');
+        restartButton.innerText = 'Restart!';
+        restartButton.className = 'restartbutton';
+
+        //add event listener to button
+        startButton.addEventListener('click', () =>{
+            document.body.innerHTML = '';
+            document.body.appendChild(firstNumText);
+            firstNumText.innerText = 'Enter first #';
+            firstNumText.className = 'enterText';
+            document.body.appendChild(inputFirstNum);
+            
+            //append and add text to submit element
+            document.body.appendChild(submitFirstNum);
+            submitFirstNum.innerText = 'Enter!';            
+        });
+
+        //add event listener to button
+        submitFirstNum.addEventListener('click', () => {   
+            document.body.innerHTML = '';
+            inputFirstNum.focus();
+            firstNum = inputFirstNum.value;
+            console.log(firstNum);
+            inputFirstNum.value = "";
+
+            //when event happens, clear the page and request final number
+            document.body.appendChild(finalNumText);
+            finalNumText.innerText = 'Enter final #';
+            finalNumText.className = 'enterText';
+            document.body.appendChild(inputLastNum);
+            
+            //append and add text to submit element
+            document.body.appendChild(submitLastNum);
+            submitLastNum.innerText = 'Enter!';
+        });
+
+        //creating ordered list element for the numbers
+        //let numberList = document. createElement('ol');
+        submitLastNum.addEventListener('click', () =>{
+            finalNum = inputLastNum.value;
+            console.log(finalNum);
+            inputLastNum.value = "";
+            
+            if(validateNums(firstNum, finalNum))
+            {
+                console.log(firstNum, finalNum);
+                sweetSalt(firstNum, finalNum);
+            }
+        });
+
+        //to restrict use of negative numbers and requested range
+        function validateNums(firstNum, finalNum){
+            if(firstNum < 0 || finalNum < 0)
+            {
+                document.body.appendChild(alertMessage);
+                alertMessage.innerHTML = "Can't have negatives numbers! try again.";
+                alertMessage.className = 'alerts';
+                return false;
+            }
+            else if((finalNum - firstNum) < 200)
+            {
+                document.body.appendChild(alertMessage);
+                alertMessage.innerText = "Values must have a range greater than 200. Try again!";
+                alertMessage.className = 'alerts';
+                return false;
+            }
+            else if ((finalNum - firstNum) > 10000)
+            {
+                document.body.appendChild(alertMessage);
+                alertMessage.innerText = "Range must be smaller than 10000. Try again!"
+                alertMessage.className = 'alerts';
+                return false;
+            }
+            else if(firstNum >= finalNum){
+                document.body.appendChild(alertMessage);
+                console.log(finalNum);
+                alertMessage.innerText = "starting number cannot be greater than the final number. Try again!"
+                alertMessage.className = 'alerts';
+                return false;
+            }
+            else return true;
+        }
+        //alert message if number is negative
+        function validateIfNegative(firstNum, finalNum){
+            if(firstNum < 0 && finalNum < 0){
+                document.body.appendChild(alertMessage);
+                alertMessage.innerText = "Can't have negatives numbers! try again.";
+                    return false;
+            } 
+            else return true;
+        }
+
+        //function to find and style multiples of 3, 5 or both
+        function sweetSalt(firstNum, finalNum){
+            document.body.innerHTML = '';
+            let threeAndFiveCounter = 0;
+            let threeCounter = 0;
+            let fiveCounter = 0;
+            let f = firstNum;
+            let b = 1; //for keeping line numbers to 40
+            let array = new Array();
+            
+            while(f <= finalNum) {
+                while(b <= 40 && f <= finalNum){
+                    if(f % 3 == 0 && f % 5 == 0)
+                    {
+                        array.push(" <span>SweetN'Salty</span>");
+                        threeAndFiveCounter++;      //increment counter
+                    }
+                    else if (f % 3 == 0)
+                    { 
+                        array.push(" <span>Sweet</span>");
+                        threeCounter++;             //increment counter
+                    }
+                    else if (f % 5 == 0)
+                    {
+                        array.push(" <span>Salty</span>");
+                        fiveCounter++;              //increment counter
+                    }   
+                    else
+                    {
+                        if (f < 1000)
+                        {
+                            array.push(` ${f}`);
+                        }
+                        else
+                        {
+                            array.push(` ${f.toLocaleString()}`)
+                        }
+                    }
+                    b++;
+                    f++;
+                }
+                b = 1;  
+                console.log("length of the long, big array bb: " + array.length);
+                newPara = document.createElement('p');
+                document.body.appendChild(newPara);
+                newPara.innerHTML = array.toString();
+                array = [];
+            }   
+            //print counters
+            console.log(`There were ${threeCounter} salties`);
+            console.log(`There were ${fiveCounter} salties`);
+            console.log(`There were ${threeAndFiveCounter} sweetn'salties`);
+            
+            //counters are appended and assigned class names
+            document.body.appendChild(finalSweetText);
+            finalSweetText.innerText = ` ${threeCounter} sweeties`;
+            finalSweetText.className = 'results';
+            document.body.appendChild(finalSaltyText);
+            finalSaltyText.innerText = ` ${fiveCounter} salties`;
+            finalSaltyText.className = 'results';
+            document.body.appendChild(finalSweetnSaltyText);
+            finalSweetnSaltyText.innerText = ` ${threeAndFiveCounter} Sweet N' Salties`;
+            finalSweetnSaltyText.className = 'results';   
+                
+            document.body.appendChild(restartButton);
+        }
+        
+        //restart element event listener
+        restartButton.addEventListener('click', () =>  {
+            location.reload();
+        });
+    </script>
+</body>
+</html>
