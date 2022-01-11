@@ -6,18 +6,18 @@ var array = new Array();
 for(var i = 1; i<=1000; i++){
     if(i % 15 == 0){
         ++snsCounter;
-        array.push("SweetNSalty");
+        array.push(" SweetNSalty");
     }
     else if(i%5 == 0){
         ++saltyCounter;
-        array.push("Salty");
+        array.push(" Salty");
     }
     else if(i%3 == 0){
         ++sweetCounter;
-        array.push("Sweet");
+        array.push(" Sweet");
     }
     else{
-        array.push(i);
+        array.push(" " + i);
     }
     if(i % 20 == 0){
         console.log(array.toString());
