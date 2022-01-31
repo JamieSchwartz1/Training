@@ -13,6 +13,6 @@ namespace SweetnSaltyDbAccess
         Task<SqlDataReader> PostPerson(string Fname, string Lname);
         Task<SqlDataReader> GetPerson(string Fname, string Lname);
         Task<SqlDataReader> GetPersonAndFlavors(int id);
-        Task<SqlDataReader> GetAllFlavors();         //credit Dan Works
+        Task<SqlDataReader> GetAllFlavors();         //credit Dan
     }
 }

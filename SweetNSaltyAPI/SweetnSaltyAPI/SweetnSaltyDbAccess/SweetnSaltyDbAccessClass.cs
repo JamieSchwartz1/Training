@@ -75,12 +75,11 @@ namespace SweetnSaltyDbAccess
             string sqlQuery = $"SELECT TOP 1 * FROM PersonFlavorJunction ORDER BY PersonID DESC";
             using (SqlCommand cmd = new SqlCommand(sqlQuery, this._con))
             {
-                //await cmd.ExecuteNonQueryAsync();
                 SqlDataReader dr = await cmd.ExecuteReaderAsync();
                 return dr;
             }
         }
-        public async Task<SqlDataReader> GetAllFlavors()         //credit Dan Works
+        public async Task<SqlDataReader> GetAllFlavors()         //credit Dan
         {
             string sqlQuery = "SELECT * FROM Flavor";
             using (SqlCommand cmd = new SqlCommand(sqlQuery, this._con))

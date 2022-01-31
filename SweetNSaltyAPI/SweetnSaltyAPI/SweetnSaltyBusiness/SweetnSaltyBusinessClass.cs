@@ -57,7 +57,7 @@ namespace SweetnSaltyBusiness
             }
             else return null;
         }
-        public async Task<List<Flavor>> GetAllFlavors()         //credit Dan Works
+        public async Task<List<Flavor>> GetAllFlavors()         //credit Dan
         {
             SqlDataReader dr = await this._dbAccess.GetAllFlavors();
             List<Flavor> listFlavors = this._mapper.EntityToFlavorList(dr);
