@@ -71,7 +71,7 @@ namespace SweetnSaltyAPI.Controllers
 
         [HttpGet]
         [Route("getlistofflavors")]
-        public async Task<ActionResult<List<Flavor>>> GetAllFlavors()         //credit Dan Works
+        public async Task<ActionResult<List<Flavor>>> GetAllFlavors()         //credit Dan
         {
             List<Flavor> f = await this._businessClass.GetAllFlavors();
             if(f != null)
