@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using JokesApp.Data;
-using JokesApp.Models;
+using JokesWebApp.Data;
+using JokesWebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 
-namespace JokesApp.Controllers
+namespace JokesWebApp.Controllers
 {
     public class JokesController : Controller
     {
@@ -32,11 +32,12 @@ namespace JokesApp.Controllers
             return View();
         }
 
-        // GET: Jokes/ShowSearchResults
-        public async Task<IActionResult> ShowSearchResults(String SearchPhrase)
+        // POST: Jokes/ShowSearchResults
+        public async Task<IActionResult> ShowSearchResults(string SearchPhrase)
         {
-            return View("Index", await _context.Joke.Where(j =>j.JokeQuestion.Contains(SearchPhrase)).ToListAsync());
+            return View("Index", await _context.Joke.Where(j => j.JokeQuestion.Contains(SearchPhrase)).ToListAsync());
         }
+
         // GET: Jokes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -68,7 +69,7 @@ namespace JokesApp.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,JokeQuestion,JokeAnswer")] Joke joke)
+        public async Task<IActionResult> Create([Bind("Id,JokeQuestion,JokeAnswer,JokeUser")] Joke joke)
         {
             if (ModelState.IsValid)
             {
@@ -82,7 +83,6 @@ namespace JokesApp.Controllers
         // GET: Jokes/Edit/5
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
-
         {
             if (id == null)
             {
@@ -103,7 +103,7 @@ namespace JokesApp.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,JokeQuestion,JokeAnswer")] Joke joke)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,JokeQuestion,JokeAnswer,JokeUser")] Joke joke)
         {
             if (id != joke.Id)
             {
