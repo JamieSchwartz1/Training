@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace JokesApp.Data.Migrations
+namespace JokesWebApp.Data.Migrations
 {
     public partial class initialsetup : Migration
     {
@@ -14,7 +14,7 @@ namespace JokesApp.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     JokeQuestion = table.Column<string>(nullable: true),
                     JokeAnswer = table.Column<string>(nullable: true),
-                    JokeUser = table.Column<string>(nullable: false)
+                    JokeUser = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
