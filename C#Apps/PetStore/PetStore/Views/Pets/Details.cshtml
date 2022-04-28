@@ -1,0 +1,29 @@
+﻿@model PetStore.ViewModels.IndexPetViewModel
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<h3>Name: @Model.Pet.Name</h3>
+<h3>Age: @Model.Pet.Age</h3>
+<h3>Breed: @Model.Pet.Breed</h3>
+<h3>Gender: @Model.Pet.Gender</h3>*@
+
+@{ 
+    var className = Model.Customers.Count > 1 ? "viewed" : null;
+}
+
+<h2 class="@className">@Model.Pet.Name</h2>
+@if (Model.Customers.Count == 0)
+{
+    <p>No one has viewed this pet.</p>
+}
+else
+{
+    <ul>
+    @foreach (var customer in Model.Customers)
+    {
+        <li>@customer.Name</li>
+    }
+    </ul>
+}
