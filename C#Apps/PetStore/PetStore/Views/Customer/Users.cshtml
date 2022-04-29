@@ -1,0 +1,30 @@
+﻿@model IEnumerable<PetStore.Models.Customer>
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Customers</h2>
+<a href="~/Views/Customer/Users.cshtml">~/Views/Customer/Users.cshtml</a>
+@if (!Model.Any())
+{
+    <p>There are not any customers yet.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Customers</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var customer in Model)
+                {
+                    <tr>
+                        <td>@Html.ActionLink(customer.Name, "Details", "Customer", new { id = customer.Id }, null)</td>
+                    </tr>
+                }
+        </tbody>
+    </table>
+}
