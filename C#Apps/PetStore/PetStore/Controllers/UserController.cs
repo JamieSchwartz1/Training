@@ -12,6 +12,13 @@ namespace PetStore.Controllers
             var user = GetUsersList();
             return View(user);
         }
+        public ActionResult Details()
+        {
+            var user = GetUsersList();
+            if (user == null)
+                return HttpNotFound();
+            return View(user);
+        }
         private IEnumerable<Customer> GetUsersList()
         {
             return new List<Customer>{

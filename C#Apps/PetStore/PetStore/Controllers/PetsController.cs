@@ -7,16 +7,10 @@ namespace PetStore.Controllers
     public class PetsController : Controller
     {
         // GET: Pets
-        public ActionResult Index()
+        [Route("pets/bystore/{id}")]
+        public ActionResult ViewPetsList()
         {
             var pet = GetPetsList();
-            return View(pet);
-        }
-        public ActionResult Details()
-        {
-            var pet = GetPetsList();
-            if (pet == null)
-                return HttpNotFound();
             return View(pet);
         }
         private IEnumerable<Pet> GetPetsList()
