@@ -7,6 +7,7 @@
         public string Breed { get; set; }
         public string Age { get; set; }
         public char Gender { get; set; }
+        public string Color { get; set; }
         public int StoreId { get; set; }
 
     }
