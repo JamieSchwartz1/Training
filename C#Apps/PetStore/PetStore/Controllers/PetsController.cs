@@ -1,7 +1,5 @@
 ﻿using PetStore.Models;
-using PetStore.ViewModels;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace PetStore.Controllers
@@ -11,23 +9,12 @@ namespace PetStore.Controllers
         // GET: Pets
         public ActionResult Index()
         {
-            var pet = new Pet() { Name = "Sadie", Age = "1 Year", Breed = "Beagle", Gender = 'F', PetId = 5 };
-            var customers = new List<Customer>()
-            {
-                new Customer{Name = "Janet"},
-                new Customer{Name = "Brad"}
-            };
-            var viewModel = new IndexPetViewModel
-            {
-                Pet = pet,
-                Customers = customers
-            };
-            return View(viewModel);
+            var pet = GetPetsList();
+            return View(pet);
         }
-
-        public ActionResult Details(int petId)
+        public ActionResult Details()
         {
-            var pet = GetPetsList().SingleOrDefault(c => c.PetId == petId);
+            var pet = GetPetsList();
             if (pet == null)
                 return HttpNotFound();
             return View(pet);
@@ -35,11 +22,13 @@ namespace PetStore.Controllers
         private IEnumerable<Pet> GetPetsList()
         {
             return new List<Pet>{
-                new Pet() { Name = "Watson", Age = "2 Years", Breed = "Shar Pei & Golden Retriever mix", Gender = 'M', PetId = 1},
-                new Pet() { Name = "Lacy", Age = "3 Years", Breed = "Chow chow", Gender = 'F', PetId = 2},
-                new Pet() { Name = "Zuzu", Age = "4 Years", Breed = "Shih Tzu", Gender = 'F', PetId = 3},
-                new Pet() { Name = "Buddy", Age = "10 months", Breed = "Cocker Spaniel & King Charles Cavalier mix", Gender = 'M', PetId = 4},
-                new Pet() { Name = "Holly", Age = "10 months", Breed = "Cocker Spaniel & King Charles Cavalier mix", Gender = 'F', PetId = 5}
+                new Pet() { PetId = 1, Name = "Watson", Age = "3 Years and 6 months", Breed = "Shar Pei & Golden Retriever mix", Gender = 'M'},
+                new Pet() { PetId = 2, Name = "Lacy", Age = "3 Years", Breed = "Chow Chow", Gender = 'F'},
+                new Pet() { PetId = 3, Name = "Zuzu", Age = "4 Years", Breed = "Shih Tzu", Gender = 'F'},
+                new Pet() { PetId = 4, Name = "Buddy", Age = "10 months", Breed = "Cocker Spaniel & King Charles Cavalier mix", Gender = 'M'},
+                new Pet() { PetId = 5, Name = "Holly", Age = "10 months", Breed = "Cocker Spaniel & King Charles Cavalier mix", Gender = 'F'},
+                new Pet() { PetId = 6, Name = "Sadie", Age = "3 years", Breed = "Hairless Sphinx", Gender = 'F'},
+                new Pet() { PetId = 7, Name = "Houdini", Age = "5 years", Breed = "Woma Python", Gender = 'M'}
             };
         }
     }

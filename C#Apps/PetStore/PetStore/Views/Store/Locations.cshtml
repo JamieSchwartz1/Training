@@ -1,0 +1,29 @@
+﻿@model PetStore.ViewModels.IndexPetViewModel
+@{
+    ViewBag.Title = "Locations";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*/Stores/Locations*@
+<h2>Locations</h2>
+
+@foreach (var store in Model.Store)
+{
+    foreach (var pet in Model.Pet)
+    {
+        if (store.Id == pet.PetId)
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>State: @store.State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@pet.PetId: @pet</td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+    }
+}

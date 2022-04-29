@@ -5,7 +5,8 @@ namespace PetStore.ViewModels
 {
     public class IndexPetViewModel
     {
-        public Pet Pet { get; set; }
+        public List<Pet> Pet { get; set; }
         public List<Customer> Customers { get; set; }
+        public List<Store> Store { get; set; }
     }
 }
