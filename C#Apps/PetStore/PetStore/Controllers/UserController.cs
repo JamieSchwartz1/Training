@@ -7,16 +7,10 @@ namespace PetStore.Controllers
     public class UserController : Controller
     {
         // GET: User
-        public ActionResult Index()
-        {
-            var user = GetUsersList();
-            return View(user);
-        }
+        [Route("User/User/{id}")]
         public ActionResult Details()
         {
             var user = GetUsersList();
-            if (user == null)
-                return HttpNotFound();
             return View(user);
         }
         private IEnumerable<Customer> GetUsersList()
