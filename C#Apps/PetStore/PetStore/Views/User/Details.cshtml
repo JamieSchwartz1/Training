@@ -5,10 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*url??*@
+@*User/Details*@
 <h2>Customers</h2>
 
 @foreach (var user in Model)
 {
-    <ul>Name: @user.Name    Favorite Pet: @user.PetPref    Contact Method: @user.ContactInfo</ul>
+    <li><strong>Name: @user.Name</strong><br />Favorite Pet: @user.PetPref<br />Contact Method: @user.ContactInfo</li>
 }
