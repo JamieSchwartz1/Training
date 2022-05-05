@@ -7,8 +7,7 @@ namespace PetStore.Controllers
     public class PetsController : Controller
     {
         // GET: Pets
-        [Route("pets/bystore/{id}")]
-        public ActionResult PetsByStoreId(int id)
+        public ActionResult Details()
         {
             var pets = new List<Pet>{
                 new Pet() { PetId = 1, Name = "Watson", Age = "3 Years and 6 months", Breed = "Dog", Color = "Gold", Gender = 'M'},

@@ -172,7 +172,7 @@
     <Content Include="Views\Pets\Details.cshtml" />
     <Content Include="Views\Shared\_navBar.cshtml" />
     <Content Include="Views\Stores\Locations.cshtml" />
-    <Content Include="Views\User\User.cshtml" />
+    <Content Include="Views\User\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

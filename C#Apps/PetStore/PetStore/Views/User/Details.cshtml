@@ -10,5 +10,8 @@
 
 @foreach (var user in Model)
 {
-    <ul>Name: @user.Name    Favorite Pet: @user.PetPref    Contact Method: @user.ContactInfo</ul>
+    <li>Name: @user.Name
+    <ul>Favorite Pet: @user.PetPref </ul>
+    <ul>Contact Method: @user.ContactInfo</ul>
+    </li>
 }

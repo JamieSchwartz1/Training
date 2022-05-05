@@ -7,7 +7,6 @@ namespace PetStore.Controllers
     public class UserController : Controller
     {
         // GET: User
-        [Route("User/User/{id}")]
         public ActionResult Details()
         {
             var user = GetUsersList();
