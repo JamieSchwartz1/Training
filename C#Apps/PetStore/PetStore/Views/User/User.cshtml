@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<PetStore.Models.Customer>
+
 @{
     ViewBag.Title = "Customers";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,7 +7,8 @@
 
 @*url??*@
 <h2>Customers</h2>
+
 @foreach (var user in Model)
 {
-<ul>Name: @user.Name    Favorite Pet: @user.PetPref    Contact Method: @user.ContactInfo</ul>
+    <ul>Name: @user.Name    Favorite Pet: @user.PetPref    Contact Method: @user.ContactInfo</ul>
 }
